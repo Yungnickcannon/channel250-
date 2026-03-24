@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Channel $250</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #f5f2ec;
+    --bg2:       #ede9e0;
+    --surface:   #ffffff;
+    --surface2:  #faf8f4;
+    --border:    #ddd8cc;
+    --border2:   #ccc6b8;
+    --ink:       #1c1a16;
+    --ink2:      #1c1a16;
+    --muted:     #3a3630;
+    --accent:    #c8732a;
+    --accent-lt: #f5e8d8;
+    --green:     #2a7a5a;
+    --green-lt:  #d8f0e8;
+    --red:       #c0392b;
+    --red-lt:    #fce8e6;
+    --blue:      #2c5f8a;
+    --blue-lt:   #deeaf5;
+    --purple:    #6b4c9a;
+    --purple-lt: #ede5f8;
+    --font-serif: 'Barlow Condensed', Impact, sans-serif;
+    --font-sans:  'Barlow', sans-serif;
+    --font-mono:  'Roboto Mono', monospace;
+    --radius: 6px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05);
+    --shadow-md: 0 2px 8px rgba(0,0,0,0.09), 0 8px 32px rgba(0,0,0,0.07);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--ink); font-family:var(--font-sans); min-height:100vh; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
+
+  /* HEADER */
+  header { background:#ffffff; border-bottom:2px solid #e8e3da; padding:0 24px; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+  .logo { font-family:var(--font-serif); font-size:26px; font-weight:800; color:#1c1a16; letter-spacing:-0.5px; }
+  .logo em { font-style:normal; color:#c8732a; }
+  .header-center { display:flex; align-items:center; gap:12px; }
+  .header-pill { background:#ffffff; border:1.5px solid #ccc6b8; border-radius:20px; padding:6px 18px; font-family:var(--font-mono); font-size:13px; color:#1c1a16; font-weight:600; }
+  .live-badge { display:flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:13px; color:#2a7a5a; font-weight:700; }
+  .live-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:breathe 2.5s ease-in-out infinite; }
+  @keyframes breathe { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+
+  /* LAYOUT */
+  .main { display:grid; grid-template-columns:1fr 380px; height:calc(100vh - 124px); }
+  .left-col { display:flex; flex-direction:column; overflow:hidden; border-right:1px solid var(--border); }
+
+  /* TILES */
+  .tiles { display:grid; grid-template-columns:repeat(5,1fr); background:var(--surface); border-bottom:2px solid var(--border); flex-shrink:0; }
+  .tile { padding:16px 18px 14px; border-right:1px solid var(--border); cursor:pointer; transition:background 0.18s; position:relative; overflow:hidden; }
+  .tile:last-child { border-right:none; }
+  .tile:hover { background:var(--bg2); }
+  .tile:hover .tile-arrow { opacity:1; transform:translateX(0); }
+  .tile-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .tile-icon { font-size:17px; }
+  .tile-arrow { font-size:11px; color:var(--muted); opacity:0; transform:translateX(-4px); transition:all 0.18s; }
+  .tile-label { font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); margin-bottom:5px; font-weight:500; }
+  .tile-value { font-family:var(--font-serif); font-size:22px; font-weight:700; color:var(--ink); line-height:1.2; }
+  .tile-sub { font-size:12px; color:var(--ink2); margin-top:4px; font-weight:500; }
+  .tile-stripe { position:absolute; bottom:0; left:0; right:0; height:2px; transition:height 0.18s; }
+  .tile:hover .tile-stripe { height:3px; }
+  .stripe-weather { background:var(--blue); }
+  .stripe-storm   { background:var(--red); }
+  .stripe-stocks  { background:var(--green); }
+  .stripe-sports  { background:var(--accent); }
+  .stripe-news    { background:var(--purple); }
+
+  /* CONTENT */
+  .content-area { overflow-y:auto; padding:22px 24px; display:flex; flex-direction:column; gap:22px; background:var(--bg); }
+  .section-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .section-title { font-family:var(--font-serif); font-size:18px; font-weight:800; color:var(--ink); white-space:nowrap; }
+  .section-line { flex:1; height:1px; background:var(--border); }
+
+  /* LAUNCH */
+  .launch-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .launch-btn { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:12px 14px; display:flex; align-items:center; gap:10px; cursor:pointer; text-decoration:none; color:var(--ink); transition:all 0.18s; box-shadow:var(--shadow); }
+  .launch-btn:hover { border-color:var(--accent); box-shadow:var(--shadow-md); transform:translateY(-1px); }
+  .launch-icon { font-size:19px; flex-shrink:0; }
+  .launch-label { font-size:15px; font-weight:700; color:var(--ink); line-height:1.3; }
+  .launch-sub { font-size:13px; color:var(--muted); font-family:var(--font-mono); font-weight:500; }
+
+  /* TOOLS */
+  .tool-list { display:flex; flex-direction:column; gap:7px; }
+  .tool-item { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:12px 16px; display:flex; align-items:center; gap:12px; cursor:pointer; transition:all 0.18s; box-shadow:var(--shadow); }
+  .tool-item:hover { border-color:var(--accent); transform:translateX(3px); box-shadow:var(--shadow-md); }
+  .tool-tag { font-family:var(--font-mono); font-size:9px; font-weight:500; padding:3px 8px; border-radius:3px; text-transform:uppercase; letter-spacing:0.8px; white-space:nowrap; flex-shrink:0; }
+  .tag-storm   { background:var(--red-lt);    color:var(--red); }
+  .tag-weather { background:var(--blue-lt);   color:var(--blue); }
+  .tag-ins     { background:var(--accent-lt); color:var(--accent); }
+  .tool-title { font-size:15px; font-weight:700; color:var(--ink); }
+  .tool-sub { font-size:13px; color:var(--muted); margin-top:2px; font-family:var(--font-mono); font-weight:500; }
+  .tool-chevron { margin-left:auto; color:var(--muted); font-size:16px; transition:all 0.18s; }
+  .tool-item:hover .tool-chevron { transform:translateX(3px); color:var(--accent); } 40%{transform:translateY(-5px);opacity:1} }
+
+  /* SPORTS TICKER */
+  .ticker-bar { background:#000000 !important; border-bottom:2px solid #c8732a; height:36px; display:flex; align-items:center; overflow:hidden; position:relative; flex-shrink:0; }
+  .ticker-tabs { display:flex; flex-shrink:0; height:100%; z-index:2; background:#000000; }
+  .ticker-tab { padding:0 14px; font-family:var(--font-mono); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; cursor:pointer; color:#666; border-right:1px solid #222; background:#000000; display:flex; align-items:center; transition:all 0.15s; white-space:nowrap; height:100%; }
+  .ticker-tab:hover { color:#fff; background:#1a1a1a; }
+  .ticker-tab.active { color:#c8732a; background:#1a1a1a; }
+  .ticker-scroll-wrap { flex:1; overflow:hidden; position:relative; height:100%; display:flex; align-items:center; background:#000000; }
+  .ticker-track { display:flex; align-items:center; white-space:nowrap; will-change:transform; }
+  .ticker-scroll-wrap:hover .ticker-track { /* paused via JS */ }
+  .ticker-item { display:inline-flex; align-items:center; gap:8px; padding:0 22px; border-right:1px solid #222222; font-family:var(--font-mono); font-size:13px; color:#cccccc; height:36px; background:#000000; }
+  .ticker-sport { font-size:9px; text-transform:uppercase; letter-spacing:1px; padding:2px 6px; border-radius:2px; font-weight:600; }
+  .sp-nba  { background:#2a1f00; color:#c8732a; }
+  .sp-wnba { background:#2a1500; color:#e8a060; }
+  .sp-ncaa { background:#001525; color:#6aaee8; }
+  .sp-ncaaw{ background:#150a25; color:#b48ee8; }
+  .sp-nfl  { background:#001a10; color:#5ec89a; }
+  .sp-golf { background:#0a1a00; color:#9ccc65; }
+  .ticker-teams { font-weight:700; color:#ffffff; font-size:12px; letter-spacing:0.2px; }
+  .ticker-score { color:#c8732a; font-weight:800; font-size:13px; }
+  .ticker-status { font-size:10px; color:#aaa; font-weight:500; }
+
+  ::-webkit-scrollbar { width:5px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:3px; }
+  ::-webkit-scrollbar-thumb:hover { background:var(--muted); }
+
+  /* NEWS/WEATHER WIDGET PANEL */
+  .widget-panel { display:flex; flex-direction:column; background:var(--surface); border-left:1px solid var(--border); overflow:hidden; }
+  .widget-header { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+  .widget-title { font-family:var(--font-serif); font-size:18px; font-weight:800; color:var(--ink); }
+  .widget-tabs { display:flex; gap:0; border-bottom:1px solid var(--border); flex-shrink:0; }
+  .wtab { flex:1; padding:10px 8px; text-align:center; font-family:var(--font-mono); font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; cursor:pointer; color:var(--muted); border-bottom:2px solid transparent; transition:all 0.15s; }
+  .wtab:hover { color:var(--ink); background:var(--bg2); }
+  .wtab.active { color:var(--accent); border-bottom-color:var(--accent); background:var(--surface); }
+  .widget-body { flex:1; overflow-y:auto; }
+  .widget-section { display:none; flex-direction:column; }
+  .widget-section.active { display:flex; }
+
+  /* WEATHER */
+  .weather-hero { background:linear-gradient(135deg, #1a3a5c 0%, #2c5f8a 60%, #4a8ab5 100%); padding:22px 18px; color:#fff; }
+  .weather-city { font-family:var(--font-serif); font-size:20px; font-weight:800; margin-bottom:4px; }
+  .weather-temp { font-family:var(--font-serif); font-size:52px; font-weight:800; line-height:1; }
+  .weather-desc { font-size:14px; opacity:0.85; margin-top:4px; font-weight:500; }
+  .weather-row { display:flex; gap:0; border-bottom:1px solid var(--border); }
+  .weather-stat { flex:1; padding:12px 14px; border-right:1px solid var(--border); }
+  .weather-stat:last-child { border-right:none; }
+  .ws-label { font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:3px; }
+  .ws-val { font-family:var(--font-serif); font-size:17px; font-weight:700; color:var(--ink); }
+  .forecast-row { display:flex; border-bottom:1px solid var(--border); }
+  .forecast-day { flex:1; padding:10px 8px; text-align:center; border-right:1px solid var(--border); }
+  .forecast-day:last-child { border-right:none; }
+  .fc-day { font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:4px; }
+  .fc-icon { font-size:20px; margin:4px 0; }
+  .fc-hi { font-family:var(--font-serif); font-size:16px; font-weight:700; color:var(--ink); }
+  .fc-lo { font-size:12px; color:var(--muted); font-weight:600; }
+
+  /* ALERTS */
+  .alert-item { padding:14px 16px; border-bottom:1px solid var(--border); display:flex; gap:12px; align-items:flex-start; cursor:pointer; transition:background 0.15s; }
+  .alert-item:hover { background:var(--bg2); }
+  .alert-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+  .dot-red { background:var(--red); box-shadow:0 0 6px rgba(192,57,43,0.5); }
+  .dot-orange { background:var(--accent); box-shadow:0 0 6px rgba(200,115,42,0.5); }
+  .dot-blue { background:var(--blue); }
+  .alert-title { font-size:13px; font-weight:700; color:var(--ink); margin-bottom:3px; }
+  .alert-meta { font-family:var(--font-mono); font-size:11px; color:var(--muted); }
+
+  /* NEWS */
+  .news-item { padding:14px 16px; border-bottom:1px solid var(--border); cursor:pointer; transition:background 0.15s; }
+  .news-item:hover { background:var(--bg2); }
+  .news-cat { font-family:var(--font-mono); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:5px; }
+  .cat-world { color:var(--blue); }
+  .cat-finance { color:var(--green); }
+  .cat-storm { color:var(--red); }
+  .cat-sports { color:var(--accent); }
+  .news-headline { font-family:var(--font-serif); font-size:14px; font-weight:700; color:var(--ink); line-height:1.4; margin-bottom:4px; }
+  .news-time { font-family:var(--font-mono); font-size:11px; color:var(--muted); }
+  .widget-refresh { padding:12px 16px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; background:var(--surface); }
+  .refresh-btn { font-family:var(--font-mono); font-size:11px; color:var(--accent); cursor:pointer; font-weight:600; border:1px solid var(--accent); border-radius:3px; padding:4px 10px; background:var(--accent-lt); transition:all 0.15s; }
+  .refresh-btn:hover { background:var(--accent); color:#fff; }
+  .refresh-time { font-family:var(--font-mono); font-size:11px; color:var(--muted); }
+
+  /* STATS TICKER */
+  .stats-bar { background:#111111; border-bottom:2px solid #2a2a2a; height:32px; display:flex; align-items:center; overflow:hidden; position:relative; flex-shrink:0; }
+  .stats-label { background:#c8732a; color:#000; font-family:var(--font-mono); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1.5px; padding:0 14px; height:100%; display:flex; align-items:center; white-space:nowrap; flex-shrink:0; }
+  .stats-scroll-wrap { flex:1; overflow:hidden; height:100%; display:flex; align-items:center; }
+  .stats-track { display:flex; align-items:center; white-space:nowrap; will-change:transform; }
+  .stat-item { display:inline-flex; align-items:center; gap:7px; padding:0 20px; border-right:1px solid #2a2a2a; height:32px; }
+  .stat-sport { font-family:var(--font-mono); font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:2px 5px; border-radius:2px; }
+  .ssp-nba   { background:#2a1f00; color:#c8732a; }
+  .ssp-wnba  { background:#2a1500; color:#e8a060; }
+  .ssp-ncaa  { background:#001525; color:#6aaee8; }
+  .ssp-nfl   { background:#001a10; color:#5ec89a; }
+  .stat-name { font-family:var(--font-mono); font-size:12px; font-weight:700; color:#ffffff; }
+  .stat-line { font-family:var(--font-mono); font-size:11px; color:#aaaaaa; }
+  .stat-value { font-family:var(--font-mono); font-size:12px; font-weight:800; color:#c8732a; }
+
+
+  /* HOURLY FORECAST */
+  .hour-item { display:flex; flex-direction:column; align-items:center; gap:3px; padding:8px 10px; border-right:1px solid var(--border); min-width:56px; flex-shrink:0; }
+  .hour-time { font-family:var(--font-mono); font-size:10px; color:var(--muted); font-weight:500; }
+  .hour-icon { font-size:18px; }
+  .hour-temp { font-family:var(--font-serif); font-size:15px; font-weight:700; color:var(--ink); }
+  .hour-precip { font-family:var(--font-mono); font-size:10px; color:var(--blue); }
+
+  /* NEWS FILTERS */
+  .news-filter-btn { font-family:var(--font-mono); font-size:10px; padding:3px 10px; border-radius:20px; background:var(--bg2); border:1px solid var(--border); color:var(--muted); cursor:pointer; transition:all 0.15s; font-weight:600; }
+  .news-filter-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .news-filter-btn.active { background:var(--accent-lt); border-color:var(--accent); color:var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Channel <em>$250</em></div>
+  <div class="header-center">
+    <div class="header-pill" id="clock">—</div>
+    <div class="header-pill">Denton, TX</div>
+  </div>
+  <div class="live-badge"><div class="live-dot"></div> Live</div>
+</header>
+
+
+<!-- SPORTS TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-tabs">
+    <div class="ticker-tab active" onclick="showTicker('all')" id="tab-all">All</div>
+    <div class="ticker-tab" onclick="showTicker('nba')"  id="tab-nba">NBA</div>
+    <div class="ticker-tab" onclick="showTicker('wnba')" id="tab-wnba">WNBA</div>
+    <div class="ticker-tab" onclick="showTicker('ncaa')" id="tab-ncaa">NCAA 🏀</div>
+    <div class="ticker-tab" onclick="showTicker('nfl')"  id="tab-nfl">NFL</div>
+    <div class="ticker-tab" onclick="showTicker('golf')" id="tab-golf">Golf</div>
+  </div>
+  <div class="ticker-scroll-wrap">
+    <div class="ticker-track" id="tickerTrack">
+      <span style="color:#555;font-family:var(--font-mono);font-size:11px;padding:0 20px;">Loading scores...</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- STATS TICKER BAR -->
+<div class="stats-bar">
+  <div class="stats-label">⭐ Top Performers</div>
+  <div class="stats-scroll-wrap">
+    <div class="stats-track" id="statsTrack"></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="left-col">
+
+    <div class="tiles">
+      <div class="tile" onclick="window.open('https://www.weather.gov', '_blank')">
+        <div class="tile-top"><div class="tile-icon">🌤️</div><div class="tile-arrow">→</div></div>
+        <div class="tile-label">Weather</div>
+        <div class="tile-value">National</div>
+        <div class="tile-sub">Alerts & conditions</div>
+        <div class="tile-stripe stripe-weather"></div>
+      </div>
+      <div class="tile" onclick="window.open('https://www.nhc.noaa.gov', '_blank')">
+        <div class="tile-top"><div class="tile-icon">🌀</div><div class="tile-arrow">→</div></div>
+        <div class="tile-label">Storm Watch</div>
+        <div class="tile-value">Tracking</div>
+        <div class="tile-sub">Gulf · Atlantic · Pacific</div>
+        <div class="tile-stripe stripe-storm"></div>
+      </div>
+      <div class="tile" onclick="window.open('https://finance.yahoo.com', '_blank')">
+        <div class="tile-top"><div class="tile-icon">📈</div><div class="tile-arrow">→</div></div>
+        <div class="tile-label">Finance</div>
+        <div class="tile-value">Markets</div>
+        <div class="tile-sub">Stocks & investing</div>
+        <div class="tile-stripe stripe-stocks"></div>
+      </div>
+      <div class="tile" onclick="window.open('https://www.espn.com', '_blank')">
+        <div class="tile-top"><div class="tile-icon">🏆</div><div class="tile-arrow">→</div></div>
+        <div class="tile-label">Sports</div>
+        <div class="tile-value">Scores</div>
+        <div class="tile-sub">All leagues</div>
+        <div class="tile-stripe stripe-sports"></div>
+      </div>
+      <div class="tile" onclick="window.open('https://apnews.com', '_blank')">
+        <div class="tile-top"><div class="tile-icon">🌍</div><div class="tile-arrow">→</div></div>
+        <div class="tile-label">World News</div>
+        <div class="tile-value">Briefing</div>
+        <div class="tile-sub">Global headlines</div>
+        <div class="tile-stripe stripe-news"></div>
+      </div>
+    </div>
+
+    <div class="content-area">
+
+      <div>
+        <div class="section-header">
+          <div class="section-title">Quick Launch</div>
+          <div class="section-line"></div>
+        </div>
+        <div class="launch-grid">
+          <a class="launch-btn" href="https://www.youtube.com" target="_blank">
+            <div class="launch-icon">▶️</div>
+            <div><div class="launch-label">YouTube</div><div class="launch-sub">Opens new tab</div></div>
+          </a>
+          <a class="launch-btn" href="https://music.apple.com" target="_blank">
+            <div class="launch-icon">🎵</div>
+            <div><div class="launch-label">Apple Music</div><div class="launch-sub">Opens new tab</div></div>
+          </a>
+          <a class="launch-btn" href="https://finance.yahoo.com" target="_blank">
+            <div class="launch-icon">💹</div>
+            <div><div class="launch-label">Yahoo Finance</div><div class="launch-sub">Live markets</div></div>
+          </a>
+          <a class="launch-btn" href="https://www.nhc.noaa.gov" target="_blank">
+            <div class="launch-icon">🌊</div>
+            <div><div class="launch-label">NOAA Hurricanes</div><div class="launch-sub">Storm tracking</div></div>
+          </a>
+          <a class="launch-btn" href="https://www.weather.gov" target="_blank">
+            <div class="launch-icon">⛈️</div>
+            <div><div class="launch-label">Weather.gov</div><div class="launch-sub">National alerts</div></div>
+          </a>
+          <a class="launch-btn" href="https://www.google.com" target="_blank">
+            <div class="launch-icon">🔍</div>
+            <div><div class="launch-label">Google</div><div class="launch-sub">Quick search</div></div>
+          </a>
+<a class="launch-btn" href="https://mail.google.com" target="_blank">
+            <div class="launch-icon">📧</div>
+            <div><div class="launch-label">Gmail</div><div class="launch-sub">Opens new tab</div></div>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-header">
+          <div class="section-title">Work Links</div>
+          <div class="section-line"></div>
+        </div>
+        <div class="tool-list">
+          <div class="tool-item" onclick="window.open('https://www.nhc.noaa.gov','_blank')">
+            <div class="tool-tag tag-storm">CAT</div>
+            <div><div class="tool-title">Active CAT Events Nationwide</div><div class="tool-sub">Catastrophe zone briefing</div></div>
+            <div class="tool-chevron">›</div>
+          </div>
+          <div class="tool-item" onclick="window.open('https://www.insurancejournal.com','_blank')">
+            <div class="tool-tag tag-ins">News</div>
+            <div><div class="tool-title">Insurance Industry News</div><div class="tool-sub">Weekly briefing</div></div>
+            <div class="tool-chevron">›</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- NEWS/WEATHER WIDGET PANEL -->
+  <div class="widget-panel">
+    <div class="widget-header">
+      <div class="widget-title">Live Feed</div>
+      <div style="font-size:12px;font-family:var(--font-mono);color:var(--muted);">Denton, TX</div>
+    </div>
+    <div class="widget-tabs">
+      <div class="wtab active" onclick="showWidget('weather', this)">🌤 Weather</div>
+      <div class="wtab" onclick="showWidget('alerts', this)">⚠️ Alerts</div>
+      <div class="wtab" onclick="showWidget('news', this)">📰 News</div>
+    </div>
+    <div class="widget-body">
+
+      <!-- WEATHER TAB -->
+      <div class="widget-section active" id="w-weather">
+        <div class="weather-hero" id="weatherHero">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div>
+              <div class="weather-city" id="weatherCity">Locating...</div>
+              <div class="weather-temp" id="weatherTemp">--°F</div>
+              <div class="weather-desc" id="weatherDesc">Loading...</div>
+            </div>
+            <div style="text-align:right;font-family:var(--font-mono);font-size:11px;opacity:0.8;cursor:pointer;" onclick="fetchWeather()" title="Refresh">↻ Refresh</div>
+          </div>
+        </div>
+        <div class="weather-row" id="weatherStats">
+          <div class="weather-stat"><div class="ws-label">Humidity</div><div class="ws-val" id="ws-humidity">--</div></div>
+          <div class="weather-stat"><div class="ws-label">Wind</div><div class="ws-val" id="ws-wind">--</div></div>
+          <div class="weather-stat"><div class="ws-label">UV Index</div><div class="ws-val" id="ws-uv">--</div></div>
+        </div>
+        <div class="weather-row">
+          <div class="weather-stat"><div class="ws-label">Visibility</div><div class="ws-val" id="ws-vis">--</div></div>
+          <div class="weather-stat"><div class="ws-label">Pressure</div><div class="ws-val" id="ws-pressure">--</div></div>
+          <div class="weather-stat"><div class="ws-label">Feels Like</div><div class="ws-val" id="ws-feels">--</div></div>
+        </div>
+        <!-- 5-DAY FORECAST -->
+        <div class="forecast-row" id="forecastRow">
+          <div class="forecast-day"><div class="fc-day">--</div><div class="fc-icon">--</div><div class="fc-hi">--</div><div class="fc-lo">--</div></div>
+        </div>
+        <!-- 12-HOUR FORECAST -->
+        <div style="border-top:1px solid var(--border);padding:10px 14px 6px;">
+          <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;">Next 12 Hours</div>
+          <div id="hourlyForecast" style="display:flex;overflow-x:auto;gap:0;padding-bottom:4px;">
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);padding:8px;">Loading...</div>
+          </div>
+        </div>
+        <!-- HAZARDS -->
+        <div style="padding:12px 16px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+          <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;">National Hazards <span id="hazardCount" style="color:var(--accent);"></span></div>
+          <div id="hazardsList"><span style="font-size:12px;color:var(--muted);">Loading...</span></div>
+        </div>
+        <div style="border-bottom:1px solid var(--border);">
+          <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:10px 16px 6px;">Active Alerts</div>
+          <div id="weatherTabAlerts" style="padding:16px;text-align:center;font-family:var(--font-mono);font-size:12px;color:var(--muted);">Loading...</div>
+        </div>
+      </div>
+
+      <!-- ALERTS TAB -->
+      <div class="widget-section" id="w-alerts">
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;">
+          <a href="https://www.nhc.noaa.gov" target="_blank" style="font-family:var(--font-mono);font-size:10px;padding:3px 10px;border-radius:3px;background:var(--blue-lt);color:var(--blue);border:1px solid var(--blue);text-decoration:none;font-weight:600;">NHC Hurricanes</a>
+          <a href="https://www.tsunami.gov" target="_blank" style="font-family:var(--font-mono);font-size:10px;padding:3px 10px;border-radius:3px;background:var(--blue-lt);color:var(--blue);border:1px solid var(--blue);text-decoration:none;font-weight:600;">Tsunami.gov</a>
+          <a href="https://pdc.org" target="_blank" style="font-family:var(--font-mono);font-size:10px;padding:3px 10px;border-radius:3px;background:var(--accent-lt);color:var(--accent);border:1px solid var(--accent);text-decoration:none;font-weight:600;">PDC · Hawaii/Pacific</a>
+          <a href="https://hazards.fema.gov" target="_blank" style="font-family:var(--font-mono);font-size:10px;padding:3px 10px;border-radius:3px;background:var(--accent-lt);color:var(--accent);border:1px solid var(--accent);text-decoration:none;font-weight:600;">FEMA Risk Index</a>
+          <a href="https://www.ssd.noaa.gov/goes/east/tatl/flash.html" target="_blank" style="font-family:var(--font-mono);font-size:10px;padding:3px 10px;border-radius:3px;background:var(--green-lt);color:var(--green);border:1px solid var(--green);text-decoration:none;font-weight:600;">NOAA Sat Loop</a>
+        </div>
+        <div id="liveAlertsContainer" style="overflow-y:auto;">
+          <div style="padding:16px;text-align:center;font-family:var(--font-mono);font-size:12px;color:var(--muted);">Loading live alerts...</div>
+        </div>
+      </div>
+
+      <!-- NEWS TAB -->
+      <div class="widget-section" id="w-news">
+        <div style="padding:8px 14px;border-bottom:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap;">
+          <div class="news-filter-btn active" onclick="filterNews('all', this)">All</div>
+          <div class="news-filter-btn" onclick="filterNews('world', this)">🌍 World</div>
+          <div class="news-filter-btn" onclick="filterNews('mideast', this)">🕌 Mid East</div>
+          <div class="news-filter-btn" onclick="filterNews('finance', this)">📈 Finance</div>
+          <div class="news-filter-btn" onclick="filterNews('weather', this)">⛈️ Weather</div>
+          <div class="news-filter-btn" onclick="filterNews('dfw', this)">📍 DFW</div>
+        </div>
+        <div id="newsContainer" style="overflow-y:auto;">
+          <div style="padding:16px;text-align:center;font-family:var(--font-mono);font-size:12px;color:var(--muted);">Loading news...</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="widget-refresh">
+      <div class="refresh-time" id="widgetTime">Updated just now</div>
+      <div class="refresh-btn" onclick="refreshWidget()">↻ Refresh</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function updateClock() {
+    document.getElementById('clock').textContent = new Date().toLocaleString('en-US', {
+      weekday:'short', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+  }
+  updateClock();
+  setInterval(updateClock, 10000);
+
+
+  // ── LIVE SPORTS TICKER ──
+  const ESPN_ENDPOINTS = {
+    nba:   'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard',
+    wnba:  'https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/scoreboard',
+    ncaa:  'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard',
+    ncaaw: 'https://site.api.espn.com/apis/site/v2/sports/basketball/womens-college-basketball/scoreboard',
+    nfl:   'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard',
+    golf:  'https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard',
+  };
+
+  const SPORT_STYLES = {
+    nba:   { label:'NBA',    cls:'sp-nba'   },
+    wnba:  { label:'WNBA',   cls:'sp-wnba'  },
+    ncaa:  { label:'NCAA M', cls:'sp-ncaa'  },
+    ncaaw: { label:'NCAA W', cls:'sp-ncaaw' },
+    nfl:   { label:'NFL',    cls:'sp-nfl'   },
+    golf:  { label:'Golf',   cls:'sp-golf'  },
+  };
+
+  let liveData = {};
+  let currentFilter = 'all';
+
+  async function fetchSport(key) {
+    try {
+      const res = await fetch(ESPN_ENDPOINTS[key]);
+      const data = await res.json();
+      const items = [];
+
+      if (key === 'golf') {
+        // ESPN golf leaderboard: events[].competitions[].competitors[]
+        const events = data.events || [];
+        const event = events[0];
+        if (event) {
+          const eventName = event.shortName || event.name || 'PGA Tour';
+          const comp = (event.competitions || [])[0];
+          if (comp) {
+            const competitors = comp.competitors || [];
+            competitors.slice(0, 10).forEach(c => {
+              // Name: athlete.displayName
+              const name = (c.athlete && c.athlete.displayName)
+                ? c.athlete.displayName
+                : (c.athlete && c.athlete.lastName)
+                  ? c.athlete.lastName
+                  : '—';
+              // Score: linescores or score field (may be object — force string)
+              let score = '—';
+              if (c.linescores && c.linescores.length) {
+                const ls = c.linescores[c.linescores.length - 1];
+                score = typeof ls.value === 'number'
+                  ? (ls.value > 0 ? '+'+ls.value : ls.value === 0 ? 'E' : ''+ls.value)
+                  : (ls.displayValue || '—');
+              } else if (typeof c.score === 'string' || typeof c.score === 'number') {
+                score = ''+c.score;
+              }
+              // Position
+              const pos = (c.status && typeof c.status.position === 'object')
+                ? (c.status.position.displayName || '')
+                : (c.status && typeof c.status === 'object')
+                  ? (c.status.displayValue || '')
+                  : '';
+              items.push({ sport: 'Golf', sp: 'sp-golf', teams: name, score: score, status: pos });
+            });
+          }
+        }
+        if (!items.length) {
+          items.push({ sport: 'Golf', sp: 'sp-golf', teams: 'No tournament today', score: '—', status: '' });
+        }
+      } else {
+        const events = data.events || [];
+        events.forEach(ev => {
+          const comp = ev.competitions?.[0];
+          if (!comp) return;
+          const teams = comp.competitors || [];
+          const home = teams.find(t => t.homeAway === 'home');
+          const away = teams.find(t => t.homeAway === 'away');
+          if (!home || !away) return;
+          const homeAbbr = home.team?.abbreviation || home.team?.shortDisplayName || '?';
+          const awayAbbr = away.team?.abbreviation || away.team?.shortDisplayName || '?';
+          const homeScore = home.score || '';
+          const awayScore = away.score || '';
+          const stateDetail = ev.status?.type?.shortDetail || ev.status?.displayClock || '';
+          const stateName = ev.status?.type?.name || '';
+          let scoreStr = '';
+          let statusStr = '';
+          if (stateName === 'STATUS_FINAL') {
+            scoreStr = awayScore + '–' + homeScore;
+            statusStr = 'Final';
+          } else if (stateName === 'STATUS_IN_PROGRESS') {
+            scoreStr = awayScore + '–' + homeScore;
+            statusStr = stateDetail + ' Live';
+          } else {
+            scoreStr = stateDetail || '—';
+            statusStr = 'Upcoming';
+          }
+          const style = SPORT_STYLES[key];
+          items.push({ sport: style.label, sp: style.cls, teams: awayAbbr + ' vs ' + homeAbbr, score: scoreStr, status: statusStr });
+        });
+      }
+      liveData[key] = items;
+    } catch(e) {
+      liveData[key] = [{ sport: SPORT_STYLES[key]?.label || key.toUpperCase(), sp: SPORT_STYLES[key]?.cls || 'sp-nba', teams: 'No games today', score: '—', status: '' }];
+    }
+  }
+
+  async function fetchAllSports() {
+    await Promise.all(Object.keys(ESPN_ENDPOINTS).map(k => fetchSport(k)));
+    renderTicker(currentFilter);
+    document.getElementById('widgetTime') && (document.getElementById('widgetTime').textContent = 'Scores updated ' + new Date().toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'}));
+  }
+
+  function buildTickerHTML(filter) {
+    let items = [];
+    const cats = filter === 'all' ? ['nba','wnba','ncaa','ncaaw','nfl','golf'] : 
+                 filter === 'ncaa' ? ['ncaa','ncaaw'] : [filter];
+    cats.forEach(cat => { if (liveData[cat]) items = items.concat(liveData[cat]); });
+    if (!items.length) return '<span style="color:#555;font-family:var(--font-mono);font-size:11px;padding:0 20px;">Loading scores...</span>';
+    const all = [...items, ...items];
+    return all.map(g => `
+      <span class="ticker-item">
+        <span class="ticker-sport ${g.sp}">${g.sport}</span>
+        <span class="ticker-teams">${g.teams}</span>
+        <span class="ticker-score">${g.score}</span>
+        <span class="ticker-status">${g.status}</span>
+      </span>`).join('');
+  }
+
+  // JS-driven smooth ticker — never restarts, just swaps content
+  let tickerX = 0;
+  let tickerPaused = false;
+  let tickerRAF = null;
+  let tickerSpeed = 0.4; // px per frame at 60fps
+
+  function getSpeed(filter) {
+    return filter === 'all' ? 0.28 : 0.42;
+  }
+
+  function renderTicker(filter) {
+    const track = document.getElementById('tickerTrack');
+    const wrap = track.parentElement;
+    const html = buildTickerHTML(filter);
+    // Build offscreen to measure
+    const temp = document.createElement('div');
+    temp.style.cssText = 'position:absolute;visibility:hidden;display:flex;white-space:nowrap;';
+    temp.innerHTML = html;
+    document.body.appendChild(temp);
+    const halfW = temp.scrollWidth;
+    document.body.removeChild(temp);
+    // Swap content without touching transform
+    track.innerHTML = html;
+    // Reset position smoothly — keep scrolling from current relative position
+    tickerSpeed = getSpeed(filter);
+    if (!tickerRAF) startTicker();
+  }
+
+  function startTicker() {
+    const track = document.getElementById('tickerTrack');
+    const wrap = track?.parentElement;
+    if (!track) return;
+
+    function tick() {
+      if (!tickerPaused) {
+        tickerX -= tickerSpeed;
+        const halfW = track.scrollWidth / 2;
+        if (Math.abs(tickerX) >= halfW) tickerX = 0;
+        track.style.transform = `translateX(${tickerX}px)`;
+      }
+      tickerRAF = requestAnimationFrame(tick);
+    }
+    tickerRAF = requestAnimationFrame(tick);
+
+    // Pause on hover
+    if (wrap) {
+      wrap.addEventListener('mouseenter', () => tickerPaused = true);
+      wrap.addEventListener('mouseleave', () => tickerPaused = false);
+    }
+  }
+
+  function showTicker(filter) {
+    currentFilter = filter;
+    document.querySelectorAll('.ticker-tab').forEach(t => t.classList.remove('active'));
+    const tab = document.getElementById('tab-' + filter);
+    if (tab) tab.classList.add('active');
+    tickerSpeed = getSpeed(filter);
+    renderTicker(filter);
+  }
+
+
+  // WIDGET PANEL
+  function showWidget(tab, el) {
+    document.querySelectorAll('.widget-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.wtab').forEach(t => t.classList.remove('active'));
+    var section = document.getElementById('w-' + tab);
+    if (section) section.classList.add('active');
+    if (el) el.classList.add('active');
+  }
+
+  function refreshWidget() {
+    const el = document.getElementById('widgetTime');
+    el.textContent = 'Refreshing...';
+    setTimeout(() => {
+      el.textContent = 'Updated just now';
+    }, 800);
+  }
+
+  // ── STATS TICKER ──
+  var statsX = 0, statsPaused = false, statsRAF = null;
+
+  function startStatsTicker() {
+    if (statsRAF) return;
+    var track = document.getElementById('statsTrack');
+    if (!track) return;
+    var wrap = track.parentElement;
+    function tick() {
+      if (!statsPaused) {
+        statsX -= 0.35;
+        var half = track.scrollWidth / 2;
+        if (Math.abs(statsX) >= half) statsX = 0;
+        track.style.transform = 'translateX(' + statsX + 'px)';
+      }
+      statsRAF = requestAnimationFrame(tick);
+    }
+    statsRAF = requestAnimationFrame(tick);
+    if (wrap) {
+      wrap.addEventListener('mouseenter', function(){ statsPaused = true; });
+      wrap.addEventListener('mouseleave', function(){ statsPaused = false; });
+    }
+  }
+
+  function renderStatsTrack(items) {
+    var track = document.getElementById('statsTrack');
+    if (!track || !items.length) return;
+    var all = items.concat(items);
+    track.innerHTML = all.map(function(s) {
+      return '<span class="stat-item"><span class="stat-sport ' + s.sp + '">' + s.sport + '</span><span class="stat-name">' + s.name + '</span><span class="stat-line">' + s.line + '</span><span class="stat-value">' + s.stat + '</span></span>';
+    }).join('');
+    if (!statsRAF) startStatsTicker();
+  }
+
+  async function fetchTodayStats() {
+    var items = [];
+    var sports = [
+      { url:'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard',                       label:'NBA',   sp:'ssp-nba'  },
+      { url:'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard',   label:'NCAA',  sp:'ssp-ncaa' },
+      { url:'https://site.api.espn.com/apis/site/v2/sports/basketball/womens-college-basketball/scoreboard', label:'NCAAW', sp:'ssp-ncaa' },
+      { url:'https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/scoreboard',                      label:'WNBA',  sp:'ssp-wnba' },
+    ];
+    for (var i = 0; i < sports.length; i++) {
+      try {
+        var sp = sports[i];
+        var res = await fetch(sp.url);
+        var data = await res.json();
+        (data.events || []).forEach(function(ev) {
+          var statusName = (ev.status && ev.status.type && ev.status.type.name) || '';
+          if (statusName.indexOf('STATUS_SCHEDULED') !== -1) return;
+          var comp = ev.competitions && ev.competitions[0];
+          if (!comp) return;
+          // Check competition-level leaders
+          var allLeaders = comp.leaders || [];
+          // Also check competitor-level leaders
+          (comp.competitors || []).forEach(function(c) {
+            allLeaders = allLeaders.concat(c.leaders || []);
+          });
+          allLeaders.forEach(function(cat) {
+            (cat.leaders || []).slice(0,1).forEach(function(leader) {
+              var athlete = leader.athlete || {};
+              var name = athlete.shortName || athlete.displayName || '';
+              var team = (athlete.team && athlete.team.abbreviation) || (leader.team && leader.team.abbreviation) || '';
+              var val = leader.displayValue || '';
+              var catName = cat.shortDisplayName || cat.abbreviation || '';
+              if (name && val && name.indexOf('object') === -1 && val.indexOf('object') === -1) {
+                var exists = items.some(function(x){ return x.name === name && x.stat.indexOf(val) !== -1; });
+                if (!exists) items.push({ sport:sp.label, sp:sp.sp, name:name, line:team, stat:catName+': '+val });
+              }
+            });
+          });
+        });
+      } catch(e) {}
+    }
+    if (items.length > 0) {
+      renderStatsTrack(items);
+    } else {
+      renderStatsTrack([{ sport:'NBA', sp:'ssp-nba', name:'No active games', line:'', stat:'Check back at tip-off' }]);
+    }
+  }
+
+  window.addEventListener('load', function() {
+    // Start tickers immediately — no API needed
+    tickerSpeed = 0.28;
+    startTicker();
+
+    // Stagger all API calls to avoid overloading
+    setTimeout(function(){ fetchWeather(); setInterval(fetchWeather, 1800000); }, 100);
+    setTimeout(function(){ fetchAlerts(); setInterval(fetchAlerts, 600000); }, 200);
+    setTimeout(function(){ fetchAllSports(); setInterval(fetchAllSports, 60000); }, 300);
+    setTimeout(function(){ fetchTodayStats(); setInterval(fetchTodayStats, 90000); }, 400);
+    setTimeout(function(){ fetchNews(); setInterval(fetchNews, 900000); }, 500);
+  });
+
+
+
+
+  // ── LIVE WEATHER ──
+  var userLat = 33.2148, userLon = -97.1331, userCity = 'Denton, TX';
+
+  const WX_CODES = {
+    0:'☀️ Clear', 1:'🌤 Mostly Clear', 2:'⛅ Partly Cloudy', 3:'☁️ Overcast',
+    45:'🌫 Foggy', 48:'🌫 Icy Fog', 51:'🌦 Light Drizzle', 53:'🌦 Drizzle',
+    55:'🌧 Heavy Drizzle', 61:'🌧 Light Rain', 63:'🌧 Rain', 65:'🌧 Heavy Rain',
+    71:'🌨 Light Snow', 73:'🌨 Snow', 75:'❄️ Heavy Snow', 77:'🌨 Snow Grains',
+    80:'🌦 Showers', 81:'🌧 Heavy Showers', 82:'⛈ Violent Showers',
+    85:'🌨 Snow Showers', 86:'❄️ Heavy Snow Showers',
+    95:'⛈ Thunderstorm', 96:'⛈ Thunderstorm+Hail', 99:'⛈ Severe Thunderstorm',
+  };
+  function wxDesc(code) { return WX_CODES[code] || '🌡 Unknown'; }
+
+  async function fetchWeather() {
+    // Step 1: get location from ipinfo (reliable)
+    try {
+      var r = await fetch('https://ipinfo.io/json');
+      var d = await r.json();
+      if (d.loc) {
+        var p = d.loc.split(',');
+        userLat = parseFloat(p[0]);
+        userLon = parseFloat(p[1]);
+        userCity = (d.city || 'Denton') + ', ' + (d.region || 'TX');
+      }
+    } catch(e) {}
+    await loadWeatherData();
+  }
+
+  async function loadWeatherData() {
+    try {
+      var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + userLat + '&longitude=' + userLon +
+        '&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_direction_10m,surface_pressure,uv_index,weather_code' +
+        '&hourly=temperature_2m,weather_code,precipitation_probability' +
+        '&daily=weather_code,temperature_2m_max,temperature_2m_min' +
+        '&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=6';
+
+      var res = await fetch(url);
+      var d = await res.json();
+      var c = d.current;
+
+      document.getElementById('weatherCity').textContent = userCity;
+      document.getElementById('weatherTemp').textContent = Math.round(c.temperature_2m) + '°F';
+      document.getElementById('weatherDesc').textContent = wxDesc(c.weather_code) + ' · Feels like ' + Math.round(c.apparent_temperature) + '°F';
+
+      var dirs = ['N','NE','E','SE','S','SW','W','NW'];
+      var dir = dirs[Math.round(c.wind_direction_10m / 45) % 8];
+      document.getElementById('ws-humidity').textContent = c.relative_humidity_2m + '%';
+      document.getElementById('ws-wind').textContent = Math.round(c.wind_speed_10m) + ' mph ' + dir;
+      document.getElementById('ws-uv').textContent = c.uv_index || '--';
+      document.getElementById('ws-pressure').textContent = c.surface_pressure ? (c.surface_pressure * 0.02953).toFixed(2) + ' in' : '--';
+      document.getElementById('ws-feels').textContent = Math.round(c.apparent_temperature) + '°F';
+      document.getElementById('ws-vis').textContent = '--';
+
+      // 5-day forecast
+      var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      var html = '';
+      for (var i = 1; i <= 5; i++) {
+        var dt = new Date(d.daily.time[i] + 'T12:00:00');
+        html += '<div class="forecast-day">' +
+          '<div class="fc-day">' + days[dt.getDay()] + '</div>' +
+          '<div class="fc-icon">' + wxDesc(d.daily.weather_code[i]).split(' ')[0] + '</div>' +
+          '<div class="fc-hi">' + Math.round(d.daily.temperature_2m_max[i]) + '°</div>' +
+          '<div class="fc-lo">' + Math.round(d.daily.temperature_2m_min[i]) + '°</div>' +
+          '</div>';
+      }
+      document.getElementById('forecastRow').innerHTML = html;
+
+      // 12-hour hourly
+      var now = new Date();
+      var hourly = d.hourly;
+      var hHtml = '';
+      var count = 0;
+      for (var h = 0; h < hourly.time.length && count < 12; h++) {
+        var hTime = new Date(hourly.time[h]);
+        if (hTime < now) continue;
+        var hr = hTime.getHours();
+        var lbl = hr === 0 ? '12AM' : hr < 12 ? hr + 'AM' : hr === 12 ? '12PM' : (hr-12) + 'PM';
+        var pr = hourly.precipitation_probability[h] || 0;
+        hHtml += '<div class="hour-item">' +
+          '<div class="hour-time">' + lbl + '</div>' +
+          '<div class="hour-icon">' + wxDesc(hourly.weather_code[h]).split(' ')[0] + '</div>' +
+          '<div class="hour-temp">' + Math.round(hourly.temperature_2m[h]) + '°</div>' +
+          (pr > 10 ? '<div class="hour-precip">💧' + pr + '%</div>' : '<div class="hour-precip"> </div>') +
+          '</div>';
+        count++;
+      }
+      document.getElementById('hourlyForecast').innerHTML = hHtml;
+
+    } catch(e) {
+      document.getElementById('weatherCity').textContent = 'Weather unavailable';
+    }
+  }
+
+  // ── LIVE NEWS ──
+  var allNewsItems = [];
+  var newsFilter = 'all';
+
+  function timeAgo(dateStr) {
+    var diff = (Date.now() - new Date(dateStr)) / 1000;
+    if (diff < 3600) return Math.round(diff/60) + 'm ago';
+    if (diff < 86400) return Math.round(diff/3600) + 'h ago';
+    return Math.round(diff/86400) + 'd ago';
+  }
+
+  async function fetchNews() {
+    var container = document.getElementById('newsContainer');
+    if (!container) return;
+
+    // Use HackerNews + Wikipedia current events APIs - always work, no CORS issues
+    try {
+      // Fetch top HN stories for tech/finance
+      var hnRes = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
+      var ids = await hnRes.json();
+      var top10 = ids.slice(0, 15);
+      var stories = await Promise.all(top10.map(function(id) {
+        return fetch('https://hacker-news.firebaseio.com/v0/item/' + id + '.json').then(function(r){ return r.json(); });
+      }));
+      allNewsItems = stories.filter(function(s){ return s && s.title && s.url; }).map(function(s) {
+        var cat = 'world'; var label = '🌍 World';
+        var t = (s.title || '').toLowerCase();
+        if (t.indexOf('stock') > -1 || t.indexOf('market') > -1 || t.indexOf('invest') > -1 || t.indexOf('fed') > -1 || t.indexOf('finance') > -1) { cat = 'finance'; label = '📈 Finance'; }
+        if (t.indexOf('israel') > -1 || t.indexOf('iran') > -1 || t.indexOf('gaza') > -1 || t.indexOf('middle east') > -1 || t.indexOf('hamas') > -1) { cat = 'mideast'; label = '🕌 Mid East'; }
+        if (t.indexOf('dallas') > -1 || t.indexOf('texas') > -1 || t.indexOf('dfw') > -1 || t.indexOf('fort worth') > -1) { cat = 'dfw'; label = '📍 DFW'; }
+        if (t.indexOf('storm') > -1 || t.indexOf('hurricane') > -1 || t.indexOf('tornado') > -1 || t.indexOf('flood') > -1 || t.indexOf('weather') > -1) { cat = 'weather'; label = '⛈️ Weather'; }
+        return { cat: cat, label: label, source: 'HackerNews', title: s.title, url: s.url, date: new Date(s.time * 1000).toISOString() };
+      });
+      if (allNewsItems.length > 0) { renderNews(); return; }
+    } catch(e) {}
+
+    renderNews(); // show fallback links
+  }
+
+  function renderNews() {
+    var container = document.getElementById('newsContainer');
+    if (!container) return;
+
+    var filtered = newsFilter === 'all' ? allNewsItems : allNewsItems.filter(function(n){ return n.cat === newsFilter; });
+
+    // Always show source links at top
+    var sourceLinks = {
+      all:     [['AP News','https://apnews.com'],['BBC World','https://www.bbc.com/news/world'],['Reuters','https://www.reuters.com']],
+      world:   [['AP News','https://apnews.com'],['BBC World','https://www.bbc.com/news/world'],['Reuters','https://www.reuters.com']],
+      mideast: [['BBC Mid East','https://www.bbc.com/news/world/middle_east'],['Al Jazeera','https://www.aljazeera.com'],['Times of Israel','https://www.timesofisrael.com']],
+      finance: [['Yahoo Finance','https://finance.yahoo.com'],['MarketWatch','https://www.marketwatch.com'],['Bloomberg','https://www.bloomberg.com']],
+      dfw:     [['NBC DFW','https://www.nbcdfw.com'],['WFAA','https://www.wfaa.com'],['Dallas News','https://www.dallasnews.com']],
+      weather: [['Weather.gov','https://www.weather.gov'],['NHC','https://www.nhc.noaa.gov'],['SPC','https://www.spc.noaa.gov']]
+    };
+
+    var links = sourceLinks[newsFilter] || sourceLinks.all;
+    var linksHTML = '<div style="display:flex;gap:6px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--border);">' +
+      links.map(function(l) {
+        return '<a href="' + l[1] + '" target="_blank" style="font-family:var(--font-mono);font-size:10px;padding:3px 10px;border-radius:3px;background:var(--accent-lt);color:var(--accent);border:1px solid var(--accent);text-decoration:none;font-weight:600;">' + l[0] + ' →</a>';
+      }).join('') + '</div>';
+
+    if (filtered.length === 0) {
+      container.innerHTML = linksHTML + '<div style="padding:12px 16px;font-family:var(--font-mono);font-size:11px;color:var(--muted);">Click a source above for live headlines</div>';
+      return;
+    }
+
+    var itemsHTML = filtered.slice(0,20).map(function(n) {
+      return '<a href="' + n.url + '" target="_blank" class="news-item" style="display:block;text-decoration:none;color:inherit;">' +
+        '<div class="news-cat" style="color:var(--accent);font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">' + n.label + ' · ' + n.source + '</div>' +
+        '<div class="news-headline">' + n.title + '</div>' +
+        '<div class="news-time">' + timeAgo(n.date) + '</div>' +
+        '</a>';
+    }).join('');
+
+    container.innerHTML = linksHTML + itemsHTML;
+  }
+
+  function filterNews(cat, el) {
+    newsFilter = cat;
+    document.querySelectorAll('.news-filter-btn').forEach(function(b){ b.classList.remove('active'); });
+    if (el) el.classList.add('active');
+    renderNews();
+  }
+
+  // ── LIVE NWS ALERTS ──
+  const ALERT_SEVERITY = {
+    'Extreme': { cls:'dot-red', color:'var(--red)' },
+    'Severe':  { cls:'dot-red', color:'var(--red)' },
+    'Moderate':{ cls:'dot-orange', color:'var(--accent)' },
+    'Minor':   { cls:'dot-blue', color:'var(--blue)' },
+    'Unknown': { cls:'dot-blue', color:'var(--blue)' },
+  };
+
+  async function fetchAlerts() {
+    try {
+      const res = await fetch('https://api.weather.gov/alerts/active?status=actual&limit=50', {
+        headers: { 'Accept': 'application/geo+json' }
+      });
+      const data = await res.json();
+      const alerts = (data.features || []);
+
+      // Render in alerts tab
+      const container = document.getElementById('liveAlertsContainer');
+      // Render top 3 in hazards section
+      const hazardsList = document.getElementById('hazardsList');
+      const hazardCount = document.getElementById('hazardCount');
+
+      if (!alerts.length) {
+        if (container) container.innerHTML = '<div style="padding:16px;text-align:center;font-family:var(--font-mono);font-size:13px;color:var(--green);font-weight:600;">✓ No active weather alerts nationwide right now</div>';
+        if (hazardsList) hazardsList.innerHTML = '<span style="font-size:13px;color:var(--green);font-weight:600;">✓ No active hazards</span>';
+        if (hazardCount) hazardCount.textContent = '';
+        return;
+      }
+
+      // Sort by severity
+      const order = ['Extreme','Severe','Moderate','Minor','Unknown'];
+      alerts.sort((a,b) => order.indexOf(a.properties.severity) - order.indexOf(b.properties.severity));
+
+      // Update hazards count
+      if (hazardCount) hazardCount.textContent = '(' + alerts.length + ' active)';
+
+      // Top 3 in hazards widget
+      if (hazardsList) {
+        hazardsList.innerHTML = alerts.slice(0,4).map(a => {
+          const p = a.properties;
+          const sev = ALERT_SEVERITY[p.severity] || ALERT_SEVERITY['Unknown'];
+          const area = (p.areaDesc || '').split(';')[0].trim();
+          return `<div style="font-size:12px;font-weight:600;color:${sev.color};margin-bottom:5px;">● ${p.event} · ${area}</div>`;
+        }).join('');
+        container.innerHTML = alertsHTML;
+        if (weatherTabAlertsEl) weatherTabAlertsEl.innerHTML = alertsHTML;
+      }
+
+      // Full list in alerts tab
+      const weatherTabAlertsEl = document.getElementById('weatherTabAlerts');
+      if (container) {
+        const alertsHTML = alerts.map(a => {
+          const p = a.properties;
+          const sev = ALERT_SEVERITY[p.severity] || ALERT_SEVERITY['Unknown'];
+          const area = (p.areaDesc || '').split(';').slice(0,2).join(', ').trim();
+          const expires = p.expires ? new Date(p.expires).toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+          const sender = p.senderName || 'NWS';
+          return `<div class="alert-item">
+            <div class="alert-dot ${sev.cls}"></div>
+            <div>
+              <div class="alert-title">${p.event} — ${area}</div>
+              <div class="alert-meta">${p.severity} · ${sender}${expires ? ' · Expires ' + expires : ''}</div>
+            </div>
+          </div>`;
+        }).join('');
+      }
+
+    } catch(e) {
+      // silently fail — keep hardcoded alerts visible
+      // silently fail - hardcoded alerts still show
+    }
+  }
+
+</script>
+</body>
+</html>
